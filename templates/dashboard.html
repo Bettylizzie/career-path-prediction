@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="dashboard">
+    <div class="container">
+        <div class="dashboard-header">
+            <h2>Welcome, {{ user.name if user else 'User' }}!</h2>
+            <p>Complete your assessments to get personalized career recommendations.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card progress-card">
+                <h3>Your Progress</h3>
+                <div class="progress-steps">
+                    <div class="progress-step {% if 'personality' in completed_assessments %}completed{% endif %}">
+                        <div class="step-number">1</div>
+                        <div class="step-info">
+                            <h4>Personality Assessment</h4>
+                            <p>{% if 'personality' in completed_assessments %}Completed{% else %}Not started{% endif %}</p>
+                        </div>
+                        <a href="{{ url_for('personality_assessment') }}" class="step-action">
+                            {% if 'personality' in completed_assessments %}View{% else %}Start{% endif %}
+                        </a>
+                    </div>
+                    <div class="progress-step {% if 'academic' in completed_assessments %}completed{% endif %}">
+                        <div class="step-number">2</div>
+                        <div class="step-info">
+                            <h4>Academic Assessment</h4>
+                            <p>{% if 'academic' in completed_assessments %}Completed{% else %}Not started{% endif %}</p>
+                        </div>
+                        <a href="{{ url_for('academic_assessment') }}" class="step-action">
+                            {% if 'academic' in completed_assessments %}View{% else %}Start{% endif %}
+                        </a>
+                    </div>
+                    <div class="progress-step {% if 'interests' in completed_assessments %}completed{% endif %}">
+                        <div class="step-number">3</div>
+                        <div class="step-info">
+                            <h4>Interest Assessment</h4>
+                            <p>{% if 'interests' in completed_assessments %}Completed{% else %}Not started{% endif %}</p>
+                        </div>
+                        <a href="{{ url_for('interests_assessment') }}" class="step-action">
+                            {% if 'interests' in completed_assessments %}View{% else %}Start{% endif %}
+                        </a>
+                    </div>
+                </div>
+                {% if all_assessments_complete %}
+                    <a href="{{ url_for('assessment_results') }}" class="btn btn-primary view-results">View Your Career Recommendations</a>
+                {% endif %}
+            </div>
+
+            <div class="dashboard-card stats-card">
+                <h3>Your Career Stats</h3>
+                <div class="stats-grid">
+                    <!-- Personality Type -->
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            {% if assessments.personality %}
+                                {{ assessments.personality.type|default('Completed') }}
+                            {% else %}
+                                Not started
+                            {% endif %}
+                        </div>
+                        <div class="stat-label">Personality Type</div>
+                    </div>
+            
+                    <!-- Academic Performance -->
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            {% if assessments.academic %}
+                                {{ assessments.academic.overall_performance|default('Completed') }}
+                            {% else %}
+                                Not started
+                            {% endif %}
+                        </div>
+                        <div class="stat-label">Academic Performance</div>
+                    </div>
+            
+                    <!-- Interests Count -->
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            {% if assessments.interests %}
+                                {{ assessments.interests.interests|length }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </div>
+                        <div class="stat-label">Interests</div>
+                    </div>
+                </div>
+            
+                <!-- Personality Insight -->
+                <div class="personality-insight">
+                    <h4>About Your Personality</h4>
+                    <p>
+                        {% if assessments.personality %}
+                            {% if assessments.personality.type == 'Analyst' %}
+                                You're logical and analytical, excelling in technical and problem-solving roles.
+                            {% elif assessments.personality.type == 'Diplomat' %}
+                                You're empathetic and cooperative, thriving in people-oriented careers.
+                            {% elif assessments.personality.type == 'Sentinel' %}
+                                You're practical and reliable, well-suited for structured environments.
+                            {% elif assessments.personality.type == 'Explorer' %}
+                                You're adaptable and spontaneous, perfect for dynamic and creative fields.
+                            {% else %}
+                                Complete the assessment to learn more about your personality.
+                            {% endif %}
+                        {% else %}
+                            Complete the personality assessment to unlock insights.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="dashboard-card quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <a href="{{ url_for('chatbot') }}" class="action-btn">
+                        <i class="fas fa-robot"></i>
+                        <span>Talk to CareerBot</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-book"></i>
+                        <span>Recommended Courses</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Job Opportunities</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Market Trends</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="dashboard-card trending-jobs">
+                <h3>Trending Jobs in Your Field</h3>
+                <ul class="job-list">
+                    <li>
+                        <div class="job-title">Data Analyst</div>
+                        <div class="job-meta">Nairobi • $1,200 - $2,500</div>
+                    </li>
+                    <li>
+                        <div class="job-title">Digital Marketing Specialist</div>
+                        <div class="job-meta">Remote • $800 - $1,800</div>
+                    </li>
+                    <li>
+                        <div class="job-title">Renewable Energy Technician</div>
+                        <div class="job-meta">Mombasa • $900 - $2,000</div>
+                    </li>
+                </ul>
+                <a href="#" class="see-more">See more opportunities →</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

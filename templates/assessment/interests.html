@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="assessment">
+    <div class="container">
+        <div class="assessment-header">
+            <h2>Interest Assessment</h2>
+            <p>Select your interests to help us match you with suitable career paths.</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 75%;"></div>
+            </div>
+        </div>
+
+        <form action="{{ url_for('interests_assessment') }}" method="POST" class="interests-form">
+            <div class="interests-grid">
+                <div class="interest-category">
+                    <h3>Technology</h3>
+                    <div class="interest-options">
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Programming">
+                            <div class="interest-card">
+                                <i class="fas fa-code"></i>
+                                <span>Programming</span>
+                            </div>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Artificial Intelligence">
+                            <div class="interest-card">
+                                <i class="fas fa-robot"></i>
+                                <span>Artificial Intelligence</span>
+                            </div>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Cybersecurity">
+                            <div class="interest-card">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Cybersecurity</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="interest-category">
+                    <h3>Business</h3>
+                    <div class="interest-options">
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Entrepreneurship">
+                            <div class="interest-card">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Entrepreneurship</span>
+                            </div>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Marketing">
+                            <div class="interest-card">
+                                <i class="fas fa-bullhorn"></i>
+                                <span>Marketing</span>
+                            </div>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Finance">
+                            <div class="interest-card">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Finance</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="interest-category">
+                    <h3>Creative Arts</h3>
+                    <div class="interest-options">
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Graphic Design">
+                            <div class="interest-card">
+                                <i class="fas fa-paint-brush"></i>
+                                <span>Graphic Design</span>
+                            </div>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Writing">
+                            <div class="interest-card">
+                                <i class="fas fa-pen-fancy"></i>
+                                <span>Writing</span>
+                            </div>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Music">
+                            <div class="interest-card">
+                                <i class="fas fa-music"></i>
+                                <span>Music</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="interest-category">
+                    <h3>Social Services</h3>
+                    <div class="interest-options">
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Teaching">
+                            <div class="interest-card">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <span>Teaching</span>
+                            </div>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Counseling">
+                            <div class="interest-card">
+                                <i class="fas fa-hands-helping"></i>
+                                <span>Counseling</span>
+                            </div>
+                        </label>
+                        <label class="interest-option">
+                            <input type="checkbox" name="interests" value="Community Work">
+                            <div class="interest-card">
+                                <i class="fas fa-hands-helping"></i>
+                                <span>Community Work</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="additional-interests">
+                <h3>Other Interests</h3>
+                <p>Add any interests not listed above (separate with commas)</p>
+                <textarea name="additional_interests" placeholder="e.g., Photography, Agriculture, Renewable Energy"></textarea>
+            </div>
+
+            <div class="assessment-actions">
+                <button type="submit" class="btn btn-primary">Submit Interests</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

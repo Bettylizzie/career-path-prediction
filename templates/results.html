@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="results">
+    <div class="container">
+        <div class="results-header">
+            <h2>Your Career Recommendations</h2>
+            <p>Based on your personality, academic performance, and interests</p>
+        </div>
+
+        <div class="results-container">
+            <div class="results-summary">
+                <div class="summary-card personality">
+                    <h3>Your Personality</h3>
+                    <div class="summary-content">
+                        <div class="personality-type">
+                            <div class="type-icon">
+                                {% if personality_type == 'Analyst' %}
+                                    <i class="fas fa-brain"></i>
+                                {% elif personality_type == 'Diplomat' %}
+                                    <i class="fas fa-hands-helping"></i>
+                                {% elif personality_type == 'Sentinel' %}
+                                    <i class="fas fa-tasks"></i>
+                                {% else %}
+                                    <i class="fas fa-compass"></i>
+                                {% endif %}
+                            </div>
+                            <div class="type-info">
+                                <h4>{{ personality_type }}</h4>
+                                <p>{{ personality_description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card academic">
+                    <h3>Academic Strengths</h3>
+                    <div class="summary-content">
+                        <div class="strengths-list">
+                            {% for subject, grade in academic_strengths.items() %}
+                            <div class="strength-item">
+                                <div class="subject">{{ subject }}</div>
+                                <div class="grade-bar">
+                                    <div class="grade-fill" style="width: {{ (grade/100)*100 }}%;"></div>
+                                    <span class="grade-value">{{ grade }}%</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card interests">
+                    <h3>Your Interests</h3>
+                    <div class="summary-content">
+                        <div class="interests-tags">
+                            {% for interest in interests %}
+                            <span class="interest-tag">{{ interest }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="career-recommendations">
+                <h3>Recommended Career Paths</h3>
+                
+                {% for recommendation in recommendations %}
+                <div class="career-card">
+                    <div class="career-header">
+                        <h4>{{ recommendation.career }}</h4>
+                        <span class="growth-badge {{ recommendation.growth|lower }}">{{ recommendation.growth }} Growth</span>
+                    </div>
+                    <div class="career-body">
+                        <p class="career-description">{{ recommendation.description }}</p>
+                        
+                        <div class="career-details">
+                            <div class="detail-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Salary Range: {{ recommendation.salary_range }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Market Demand: High</span>
+                            </div>
+                        </div>
+                        
+                        <div class="skills-section">
+                            <h5>Key Skills Needed:</h5>
+                            <div class="skills-tags">
+                                {% for skill in recommendation.required_skills %}
+                                <span class="skill-tag">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="courses-section">
+                            <h5>Recommended Courses:</h5>
+                            <ul class="courses-list">
+                                {% for course in recommendation.courses %}
+                                <li>
+                                    <a href="#" target="_blank">{{ course.name }}</a>
+                                    <span class="course-provider">{{ course.provider }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="career-actions">
+                        <button class="btn btn-outline">Save Career</button>
+                        <button class="btn btn-primary">View Job Opportunities</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="alternative-options">
+                <h3>Alternative Career Options</h3>
+                <p>Based on your profile, you might also consider these careers that are often overlooked but offer great opportunities:</p>
+                
+                <div class="alternative-grid">
+                    {% for career in alternative_careers %}
+                    <div class="alternative-card">
+                        <h4>{{ career.title }}</h4>
+                        <p>{{ career.description }}</p>
+                        <div class="alt-meta">
+                            <span><i class="fas fa-money-bill-wave"></i> {{ career.salary }}</span>
+                            <span><i class="fas fa-clock"></i> {{ career.training }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="results-actions">
+            <button class="btn btn-secondary">Print Results</button>
+            <button class="btn btn-primary">Talk to CareerBot for More Guidance</button>
+        </div>
+    </div>
+</section>
+
+<div class="results-visualization">
+    <div class="container">
+        <h3>Your Career Match Visualization</h3>
+        <div class="viz-container">
+            <canvas id="careerRadarChart"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script>
+    // Radar chart for career match visualization
+    const radarCtx = document.getElementById('careerRadarChart').getContext('2d');
+    const radarChart = new Chart(radarCtx, {
+        type: 'radar',
+        data: {
+            labels: ['Personality Match', 'Academic Fit', 'Interest Alignment', 'Market Demand', 'Salary Potential'],
+            datasets: [{
+                label: 'Career Match Score',
+                data: [85, 78, 90, 82, 75],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                pointRadius: 4
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    angleLines: {
+                        display: true
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

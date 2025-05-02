@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-container">
+        <div class="auth-form">
+            <h2>Login to Your Account</h2>
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <a href="{{ url_for('register') }}" class="btn btn-text">Don't have an account? Register</a>
+                </div>
+            </form>
+        </div>
+        <div class="auth-image">
+            <img src="{{ url_for('static', filename='images/login-image.jpg') }}" alt="Login Illustration">
+        </div>
+    </div>
+</section>
+{% endblock %}

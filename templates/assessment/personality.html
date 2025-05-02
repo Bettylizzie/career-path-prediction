@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="assessment">
+    <div class="container">
+        <div class="assessment-header">
+            <h2>Personality Assessment</h2>
+            <p>Answer these questions honestly to help us understand your work style.</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 25%;"></div>
+            </div>
+        </div>
+
+        <form action="{{ url_for('personality_assessment') }}" method="POST" class="personality-form">
+            <div class="assessment-questions">
+                {% for question in questions %}
+                <div class="question">
+                    <p>{{ question }}</p>
+                    <div class="options">
+                        <label>
+                            <input type="radio" name="q{{ loop.index }}" value="1" required>
+                            <span>Strongly Disagree</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="q{{ loop.index }}" value="2">
+                            <span>Disagree</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="q{{ loop.index }}" value="3">
+                            <span>Neutral</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="q{{ loop.index }}" value="4">
+                            <span>Agree</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="q{{ loop.index }}" value="5">
+                            <span>Strongly Agree</span>
+                        </label>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="assessment-actions">
+                <button type="submit" class="btn btn-primary">Submit Assessment</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

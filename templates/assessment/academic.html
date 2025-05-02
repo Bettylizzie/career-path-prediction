@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="assessment">
+    <div class="container">
+        <div class="assessment-header">
+            <h2>Academic Assessment</h2>
+            <p>Upload your academic transcripts or certificates for analysis</p>
+        </div>
+
+        <form id="uploadForm" action="{{ url_for('academic_assessment') }}" method="POST" enctype="multipart/form-data">
+            <div class="upload-container">
+                <!-- File Input Area -->
+                <div class="upload-area">
+                    <div class="upload-box" id="uploadBox">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drag & Drop Files Here</h3>
+                        <p>or</p>
+                        <label for="fileInput" class="btn btn-secondary">Select Files</label>
+                        <input type="file" id="fileInput" name="files" multiple accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+                    </div>
+                    <div class="file-list" id="fileList"></div>
+                </div>
+
+                <!-- Upload Button (now visible) -->
+                <div class="upload-actions">
+                    <button type="submit" class="btn btn-primary" id="analyzeBtn" disabled>
+                        <i class="fas fa-chart-line"></i> Analyze Documents
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .upload-container {
+        margin-top: 30px;
+    }
+    .upload-actions {
+        margin-top: 20px;
+        text-align: center;
+    }
+    #analyzeBtn[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    .file-list {
+        margin-top: 15px;
+    }
+    .file-item {
+        padding: 8px;
+        background: #f5f7ff;
+        margin-bottom: 5px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('fileInput');
+    const uploadBox = document.getElementById('uploadBox');
+    const fileList = document.getElementById('fileList');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const form = document.getElementById('uploadForm');
+
+    // Handle file selection
+    fileInput.addEventListener('change', function() {
+        updateFileList(this.files);
+    });
+
+    // Drag and drop functionality
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        uploadBox.addEventListener(eventName, preventDefaults, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        uploadBox.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        uploadBox.addEventListener(eventName, unhighlight, false);
+    });
+
+    uploadBox.addEventListener('drop', function(e) {
+        fileInput.files = e.dataTransfer.files;
+        updateFileList(fileInput.files);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function highlight() {
+        uploadBox.classList.add('highlight');
+    }
+
+    function unhighlight() {
+        uploadBox.classList.remove('highlight');
+    }
+
+    function updateFileList(files) {
+        fileList.innerHTML = '';
+        if (files.length > 0) {
+            uploadBox.querySelector('h3').textContent = `${files.length} file(s) selected`;
+            analyzeBtn.disabled = false;
+            
+            // Show file list
+            for (let i = 0; i < files.length; i++) {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <i class="fas fa-file-alt"></i> ${files[i].name} (${formatFileSize(files[i].size)})
+                `;
+                fileList.appendChild(fileItem);
+            }
+        } else {
+            uploadBox.querySelector('h3').textContent = 'Drag & Drop Files Here';
+            analyzeBtn.disabled = true;
+        }
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+});
+</script>
+{% endblock %}

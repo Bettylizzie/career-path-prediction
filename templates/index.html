@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h2>Discover Your Ideal Career Path</h2>
+            <p>Our AI-powered platform analyzes your academic records, personality, and interests to recommend the best career options for you.</p>
+            <div class="cta-buttons">
+                {% if 'user_id' not in session %}
+                    <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+                {% else %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='images/hero-image.png') }}" alt="Career Path Illustration">
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>How It Works</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3>Academic Analysis</h3>
+                <p>Upload your academic transcripts and let our AI analyze your strengths.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>Personality Assessment</h3>
+                <p>Take our quick personality test to understand your work style.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Interest Matching</h3>
+                <p>Tell us what you're passionate about to find fulfilling careers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Market Trends</h3>
+                <p>Get recommendations based on current job market demands.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <div class="container">
+        <h2>Success Stories</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"This platform helped me discover a career in data science that I never considered before. Now I'm doing what I love!"</p>
+                    <div class="testimonial-author">
+                        <img src="{{ url_for('static', filename='images/testimonial1.png') }}" alt="Sarah K.">
+                        <div>
+                            <h4>Sarah K.</h4>
+                            <p>Data Scientist, Nairobi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"As a TVET graduate, I struggled to find direction. The career predictor showed me opportunities I didn't know existed."</p>
+                    <div class="testimonial-author">
+                        <img src="{{ url_for('static', filename='images/testimonial2.png') }}" alt="James M.">
+                        <div>
+                            <h4>James M.</h4>
+                            <p>Renewable Energy Technician, Mombasa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="market-trends">
+    <div class="container">
+        <h2>Current Job Market Trends</h2>
+        <div class="trends-container">
+            <div class="trends-chart">
+                <canvas id="trendsChart"></canvas>
+            </div>
+            <div class="trends-list">
+                <h3>Top Growing Careers in Kenya</h3>
+                <ul>
+                    <li><i class="fas fa-arrow-up"></i> Data Science & AI Specialists</li>
+                    <li><i class="fas fa-arrow-up"></i> Renewable Energy Technicians</li>
+                    <li><i class="fas fa-arrow-up"></i> Digital Marketing Experts</li>
+                    <li><i class="fas fa-arrow-up"></i> Healthcare Professionals</li>
+                    <li><i class="fas fa-arrow-up"></i> Software Developers</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}
